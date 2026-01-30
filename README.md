@@ -114,8 +114,8 @@ This project is licensed under the **MIT License**.
 
 **Manikanta Achanta**
 
-* GitHub: [https://github.com/your-username](https://github.com/manikanta-achanta)
-* LinkedIn: [https://linkedin.com/in/your-profile](https://www.linkedin.com/in/manikanta-achanta-9b9617381/)
+* GitHub: [https://github.com/manikanta-achanta](https://github.com/manikanta-achanta)
+* LinkedIn: [https://linkedin.com/in/manikanta-achanta-9b9617381](https://www.linkedin.com/in/manikanta-achanta-9b9617381/)
 
 ---
 
