@@ -1,60 +1,77 @@
-import React, { useState } from 'react';
-import './App.css';
+import { useState, useEffect } from "react";
+import "./App.css";
 
-function App() {
-  const [val, setVal] = useState("");
+export default function App() {
+  const [task, setTask] = useState("");
+  const [tasks, setTasks] = useState(
+    JSON.parse(localStorage.getItem("tasks")) || []
+  );
+  const [darkMode, setDarkMode] = useState(false);
 
-  function clicking(key) {
-    setVal(val + key);
-  }
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }, [tasks]);
 
-  function clear() {
-    setVal("");
-  }
+  const addTask = () => {
+    if (!task.trim()) return;
+    setTasks([...tasks, { text: task, completed: false }]);
+    setTask("");
+  };
 
-  function result() {
-    try {
-      setVal(eval(val).toString());
-    } catch {
-      setVal("Error");
-    }
-  }
+  const toggleTask = (index) => {
+    const updated = [...tasks];
+    updated[index].completed = !updated[index].completed;
+    setTasks(updated);
+  };
+
+  const deleteTask = (index) => {
+    setTasks(tasks.filter((_, i) => i !== index));
+  };
 
   return (
-    <div className="container">
-      <div className="calculater">
-        <input type="text" className="screen" value={val} readOnly />
-
-        <div className="keypad">
-          <button onClick={() => clicking("1")}>1</button>
-          <button onClick={() => clicking("2")}>2</button>
-          <button onClick={() => clicking("3")}>3</button>
-          <button onClick={() => clicking("4")}>4</button>
+    <div className={darkMode ? "app dark" : "app"}>
+      <div className="card">
+        <div className="header">
+          <h1>Task Manager</h1>
+          <button
+            className="toggle-btn"
+            onClick={() => setDarkMode(!darkMode)}
+          >
+            {darkMode ? "Light Mode" : "Dark Mode"}
+          </button>
         </div>
 
-        <div className="keypad">
-          <button onClick={() => clicking("5")}>5</button>
-          <button onClick={() => clicking("6")}>6</button>
-          <button onClick={() => clicking("7")}>7</button>
-          <button onClick={() => clicking("8")}>8</button>
+        <div className="input-group">
+          <input
+            type="text"
+            placeholder="Enter task..."
+            value={task}
+            onChange={(e) => setTask(e.target.value)}
+          />
+          <button className="add-btn" onClick={addTask}>
+            Add
+          </button>
         </div>
 
-        <div className="keypad">
-          <button onClick={() => clicking("9")}>9</button>
-          <button onClick={() => clicking("0")}>0</button>
-          <button onClick={() => clicking("+")}>+</button>
-          <button onClick={() => clicking("-")}>-</button>
-        </div>
-
-        <div className="keypad">
-          <button onClick={() => clicking("*")}>*</button>
-          <button onClick={() => clicking("/")}>/</button>
-          <button onClick={result}>=</button>
-          <button onClick={clear}>C</button>
-        </div>
+        <ul className="task-list">
+          {tasks.map((t, index) => (
+            <li key={index} className="task-item">
+              <span
+                className={t.completed ? "completed" : ""}
+                onClick={() => toggleTask(index)}
+              >
+                {t.text}
+              </span>
+              <button
+                className="delete-btn"
+                onClick={() => deleteTask(index)}
+              >
+                ✕
+              </button>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
 }
-
-export default App;
